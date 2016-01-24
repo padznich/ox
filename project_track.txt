@@ -1,0 +1,36 @@
+
+FOLDER: pwt_xo
+
+~/pwt_xo$ virtualenv env
+~/pwt_xo$ source env/bin/activate
+
+(env) sudo apt-get build-dep python-mysqldb
+(env) pip install mysql-python
+(env) pip install redis
+(env) pip install hiredis
+(env) pip install django==1.8.4
+(env) pip install south
+
+(env) django-admin startproject xo_game
+(env) cd xo_game
+(env) pip freeze > requirements.txt
+
+#
+# adjust setting.py with mysql
+#
+
+(env) pyton manage.py startapp db_mysql
+(env) pyton manage.py inspectdb > db_mysql/models.py
+(env) pyton manage.py syncdb        # and createsuperuser
+
+#
+# adjust admin.py with Players, PlayerAchievements, PlayerSessions, PlayerStats, LogGameEvents
+# "was trouble with:
+#   class PlayerAchievements(models.Model):
+#          unique_together = (('player', 'achievement_id'),)"
+
+(env) pyton manage.py makemigrations
+(env) pyton manage.py syncdb
+(env) pyton manage.py runserver
+
+
