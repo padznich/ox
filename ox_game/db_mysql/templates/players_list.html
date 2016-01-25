@@ -1,0 +1,39 @@
+<h1>{% now "jS F Y H:i" %}<h1>
+<table border="2">
+   <tr>
+       <td>id</td>
+       <td>nickname</td>
+       <td>xp</td>
+       <td>Email</td>
+       <td>password_hash</td>
+       <td>created</td>
+       <td>updated</td>
+   </tr>
+    {% for player in players %}
+    <tr>
+        <td>{{ player.id }}</td>
+        <td>{{ player.nickname }}</td>
+        <td>{{ player.xp }}</td>
+        <td>{{ player.email }}</td>
+        <td>********</td>
+        <td>{{ player.created|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ player.updated|date:"SHORT_DATE_FORMAT" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if players.has_previous %}
+            <a href="?page={{ players.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ players.number }} of {{ players.paginator.num_pages }}.
+        </span>
+
+        {% if players.has_next %}
+            <a href="?page={{ players.next_page_number }}">Next</a>
+        {% endif %}
+    </span>
+</div>

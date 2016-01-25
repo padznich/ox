@@ -83,7 +83,7 @@ class Players(models.Model):
     updated = models.DateTimeField()
 
     def __unicode__(self):
-        return u"nickname={}, email={}".format(self.nickname, self.email)
+        return u"{}, email={}".format(self.nickname, self.email)
 
     class Meta:
         managed = False
