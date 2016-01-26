@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-#from django.http import HttpResponse
+from django.shortcuts import render
+# from django.http import HttpResponse
 
 # Create your views here.
 
@@ -24,3 +25,11 @@ def players_listing(request):
         players = paginator.page(paginator.num_pages)
 
     return render_to_response('players_list.html', {"players": players})
+
+
+def home(request):
+    template_data = {
+        "player_list": Players.objects.all()
+    }
+
+    return render(request, 'base.html', template_data)

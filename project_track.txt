@@ -32,5 +32,26 @@ FOLDER: pwt_xo
 (env) pyton manage.py makemigrations
 (env) pyton manage.py syncdb
 (env) pyton manage.py runserver
+________________________________________________________
+
+(env) sudo apt-get install nodejs
+(env) alias node=nodejs # node -v  == nodejs -v
+(env) sudo apt-get install npm
+(env) sudo apt-get install build-essential
+(env) sudo apt-get install build-essential libssl-dev
+(env) sudo npm install -g flatiron  # wrong
+(env) sudo npm install -g forever   # wrong
+
+(env) sudo npm install -g bower
+(env) sudo npm install -g grunt-cli
+(env) npm install   # at the root /bottstrap/
+(env) grunt dist
+(env) grunt watch
+(env) grunt test
+(env) grunt docs
+(env) grunt
+(env)
+(env)
+(env)
 
 

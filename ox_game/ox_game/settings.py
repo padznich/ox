@@ -109,4 +109,4 @@ STATIC_URL = '/static/'
 
 # db_mysql Application
 
-NUMBER_OF_RECORDS_AT_THE_PAGE = 30
+NUMBER_OF_RECORDS_AT_THE_PAGE = 2

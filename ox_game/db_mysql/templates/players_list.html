@@ -1,16 +1,21 @@
-<h1>{% now "jS F Y H:i" %}<h1>
+{% extends "base.html" %}
+
+{% block title %}Players list page{% endblock %}
+
+{% block content %}
+<h1 align="right">{% now "jS F Y H:i" %}</h1>
 <table border="2">
-   <tr>
-       <td>id</td>
-       <td>nickname</td>
-       <td>xp</td>
-       <td>Email</td>
-       <td>password_hash</td>
-       <td>created</td>
-       <td>updated</td>
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="400">nickname</td>
+       <td width="100">xp</td>
+       <td width="400">Email</td>
+       <td width="100">password_hash</td>
+       <td width="100">created</td>
+       <td width="100">updated</td>
    </tr>
     {% for player in players %}
-    <tr>
+    <tr align="center">
         <td>{{ player.id }}</td>
         <td>{{ player.nickname }}</td>
         <td>{{ player.xp }}</td>
@@ -21,11 +26,12 @@
     </tr>
     {% endfor %}
 </table>
-
 <div class="pagination">
     <span class="step-links">
         {% if players.has_previous %}
-            <a href="?page={{ players.previous_page_number }}">Previous</a>
+            <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    data-placement="left" title="To previous page">
+                <a href="?page={{ players.previous_page_number }}">Previous</a></button>
         {% endif %}
 
         <span class="current">
@@ -33,7 +39,10 @@
         </span>
 
         {% if players.has_next %}
-            <a href="?page={{ players.next_page_number }}">Next</a>
+            <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    data-placement="right" title="To next page">
+                <a href="?page={{ players.next_page_number }}">Next</a></button>
         {% endif %}
     </span>
 </div>
+{% endblock %}
