@@ -44,15 +44,11 @@
         {% endif %}
     </span>
 </div>
-<td>
-    <button type="button"
-            class="btn btn-default"
-            data-toggle="tooltip"
-            data-placement="left"
-            title="Filtering by date diapason">
-        <a href="/log_list_date/" target="_self">Filter by date:</a>
-        <input name="from_date" type="datetime" placeholder="30/12/2015">
-        <input name="to_date" type="datetime" placeholder="31/12/2015">
-    </button>
-</td>
+<p>
+    <form>
+        <input type="text" id="from_date" name="from_date" value="{{ from_date }}">
+        <input type="text" id="to_date" name="to_date" value="{{ to_date }}">
+    </form>
+    <a href="/log_list_date/{{ form.from_date.value }}/{{ form.to_date.value }}/">Filter</a>
+</p>
 {% endblock %}

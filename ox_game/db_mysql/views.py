@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 
 from models import Players, LogGameEvents
 
-from forms import PlayerChangeForm
+from forms import PlayerChangeForm, LogDateFilterForm
 from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE
 from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
 

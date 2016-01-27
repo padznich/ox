@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^list/', players_listing),
     url(r'^log_list/', log_game_events_listing),
     url(r'^log_list_id/([0-9])+/', log_filter_by_id),
-    url(r'^log_list_date/', log_filter_by_date_created),
+    # url(r'^log_list_date/(.*)/(.*)/',
+    url(r'^log_list_date/(\d{2})[/.-](\d{2})[/.-](\d{4})$/(\d{2})[/.-](\d{2})[/.-](\d{4})$/',
+        log_filter_by_date_created),
     url(r'^change_xp/([0-9]+)/', change_xp),
 ]
