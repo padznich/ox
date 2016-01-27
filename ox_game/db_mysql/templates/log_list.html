@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Logs list page{% endblock %}
+{% block content %}
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="100">player_id</td>
+       <td width="400">event_type</td>
+       <td width="800">event_data</td>
+       <td width="200">created</td>
+   </tr>
+    {% for log in logs %}
+    <tr align="center">
+        <td>{{ log.id }}</td>
+        <td>
+            <a href="/log_list_id/{{ log.player_id }}/"
+               target="_self"
+               title="filtering by playerid">
+                {{ log.player_id }}
+            </a>
+        </td>
+        <td>{{ log.event_type }}</td>
+        <td>{{ log.event_data }}</td>
+        <td>{{ log.created|date:"SHORT_DATE_FORMAT" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<div class="pagination">
+    <span class="step-links">
+        {% if logs.has_previous %}
+            <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    data-placement="left" title="To previous page">
+                <a href="?page={{ logs.previous_page_number }}">Previous</a></button>
+        {% endif %}
+
+        <span class="current">
+            Page {{ logs.number }} of {{ logs.paginator.num_pages }}.
+        </span>
+
+        {% if logs.has_next %}
+            <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    data-placement="right" title="To next page">
+                <a href="?page={{ logs.next_page_number }}">Next</a></button>
+        {% endif %}
+    </span>
+</div>
+<td>
+    <button type="button"
+            class="btn btn-default"
+            data-toggle="tooltip"
+            data-placement="left"
+            title="Filtering by date diapason">
+        <a href="/log_list_date/" target="_self">Filter by date:</a>
+        <input name="from_date" type="datetime" placeholder="30/12/2015">
+        <input name="to_date" type="datetime" placeholder="31/12/2015">
+    </button>
+</td>
+{% endblock %}
