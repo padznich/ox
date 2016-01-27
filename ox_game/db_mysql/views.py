@@ -1,13 +1,19 @@
 from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-# from django.http import HttpResponse
-
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 from models import Players
+from forms import PlayerChangeForm
 from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE
 
+
+def home(request):
+    template_data = {
+        "player_list": Players.objects.all()
+    }
+    return render(request, 'base.html', template_data)
 
 def players_listing(request):
     # Feature #6
@@ -27,9 +33,20 @@ def players_listing(request):
     return render_to_response('players_list.html', {"players": players})
 
 
-def home(request):
+def change_xp(request, player_id):
+    # Feature #15
+    player = Players.objects.get(id=player_id)
+    form = PlayerChangeForm(data={"nickname": player.nickname, "email": player.email, "xp": player.xp})
     template_data = {
-        "player_list": Players.objects.all()
+        "form": form,
+        "player": player
     }
 
-    return render(request, 'base.html', template_data)
+    if request.method == 'POST':
+        form = PlayerChangeForm(request.POST)
+        if form.is_valid():
+            player.xp = form.cleaned_data["xp"]
+            player.save()
+            return HttpResponseRedirect("/list/")
+
+    return render(request, 'change_player_form.html', template_data)

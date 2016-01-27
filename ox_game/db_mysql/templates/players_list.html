@@ -13,6 +13,7 @@
        <td width="100">password_hash</td>
        <td width="100">created</td>
        <td width="100">updated</td>
+       <td width="100">editing</td>
    </tr>
     {% for player in players %}
     <tr align="center">
@@ -23,6 +24,12 @@
         <td>********</td>
         <td>{{ player.created|date:"SHORT_DATE_FORMAT" }}</td>
         <td>{{ player.updated|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>
+            <!--<button type="button" class="btn btn-default" data-toggle="tooltip"-->
+                    <!--data-placement="left" title="Edit player xp">-->
+                <a href="/change_xp/{{ player.id }}/">Edit</a>
+            <!--</button>-->
+        </td>
     </tr>
     {% endfor %}
 </table>
