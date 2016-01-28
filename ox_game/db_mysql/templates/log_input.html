@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="nofollowstylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" type="text/css" />
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style>
+        body{margin: 5px;}
+        p{color: blue; margin:3px;}
+    </style>
+</head>
+<body>
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="100">player_id</td>
+       <td width="400">event_type</td>
+       <td width="800">event_data</td>
+       <td width="200">created</td>
+   </tr>
+    {% for log in logs %}
+    <tr align="center">
+        <td>{{ log.id }}</td>
+        <td>{{ log.player_id }}</td>
+        <td>{{ log.event_type }}</td>
+        <td>{{ log.event_data }}</td>
+        <td>{{ log.created|date:"SHORT_DATE_FORMAT" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<div class="row-fluid">
+    <form class="form-horizontal" action="" method="POST">{% csrf_token %}
+        <fieldset>
+            <!-- Form Name -->
+            <legend> Filter Form </legend>
+            <!-- Text input-->
+            <div class="control-group">
+                <label class="control-label" for="textinput"> ID Filtering </label>
+                <div class="controls">
+                    <input id="textinput" name="textinput" type="text" placeholder="Enter player ID"
+                           class="input" onkeyup="getVals(this, 'text');">
+                    <input type="submit" value="Filter">
+                    <p id="pTextInput"></p>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script>
+        function getVals(formControl, controlType) {
+            switch (controlType) {
+
+                case 'text':
+                    // Get the value for a text input
+                    var player_id = $(formControl).val();
+                    $("#pTextInput").text(value);
+                    break;
+</script>
+</body>

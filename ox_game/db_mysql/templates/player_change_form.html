@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
-{% block title %}Changing Xp page{% endblock %}
-
+{% block title %}Changing Player Xp page{% endblock %}
 {% block content %}
 <h1>Changing attributes of player {{ player.id }}</h1>
 <h1>{{ player.nickname }} # {{ player.email }}</h1>
@@ -9,7 +7,7 @@
     <form action="/change_xp/{{ player.id }}/" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Change" />
+        <input type="submit" value="Change"/>
     </form>
 </h1>
 {% endblock %}

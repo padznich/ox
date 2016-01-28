@@ -15,7 +15,7 @@
         <td>
             <a href="/log_list_id/{{ log.player_id }}/"
                target="_self"
-               title="filtering by playerid">
+               title="filtering by player id">
                 {{ log.player_id }}
             </a>
         </td>
@@ -44,11 +44,6 @@
         {% endif %}
     </span>
 </div>
-<p>
-    <form>
-        <input type="text" id="from_date" name="from_date" value="{{ from_date }}">
-        <input type="text" id="to_date" name="to_date" value="{{ to_date }}">
-    </form>
-    <a href="/log_list_date/{{ form.from_date.value }}/{{ form.to_date.value }}/">Filter</a>
-</p>
+<a href="/log_date_filter/">Dates filtering</a> </br>
+<a href="/log_player_id_filter/">Player's ID filtering</a>
 {% endblock %}

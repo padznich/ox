@@ -39,11 +39,9 @@
                     data-placement="left" title="To previous page">
                 <a href="?page={{ players.previous_page_number }}">Previous</a></button>
         {% endif %}
-
         <span class="current">
             Page {{ players.number }} of {{ players.paginator.num_pages }}.
         </span>
-
         {% if players.has_next %}
             <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="right" title="To next page">
