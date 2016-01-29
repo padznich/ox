@@ -16,26 +16,19 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from db_mysql.views import players_listing
-from db_mysql.views import log_game_events_listing
-from db_mysql.views import home
-from db_mysql.views import change_xp
-from db_mysql.views import log_filter_by_id
-from db_mysql.views import log_date_filter
-from db_mysql.views import log_player_id_filter
-from db_mysql.views import log_cool
+from db_app import views
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^home/', home),
 
-    url(r'^list/', players_listing),
-    url(r'^change_xp/([0-9]+)/', change_xp),
+    url(r'', views.show_users),
+    url(r'^users/$', views.show_users),
+    url(r'^users/([0-9])+/$', views.change_xp),
 
-    url(r'^log_list/', log_game_events_listing),
-    url(r'^log_date_filter/', log_date_filter),
-    url(r'^log_player_id_filter/', log_player_id_filter),
-    url(r'^log_list_id/([0-9])+/', log_filter_by_id),
 
-    url(r'^log_cool/', log_cool),
+    (r'^accounts/login/$', views.login),
+
+
+    url(r'^logs/$', views.show_logs),
 ]

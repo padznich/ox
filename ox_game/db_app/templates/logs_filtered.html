@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Logs list page{% endblock %}
+{% block title %}Filtered Logs list{% endblock %}
 {% block content %}
 <table border="2">
    <tr align="center" bgcolor="grey">
@@ -13,11 +13,9 @@
     <tr align="center">
         <td>{{ log.id }}</td>
         <td>
-            <a href="/log_list_id/{{ log.player_id }}/"
-               target="_self"
-               title="filtering by player id">
+            <!--<a href="/log/{{ log.player_id }}/" target="_self" title="filtering by player id">-->
                 {{ log.player_id }}
-            </a>
+            <!--</a>-->
         </td>
         <td>{{ log.event_type }}</td>
         <td>{{ log.event_data }}</td>
@@ -30,20 +28,18 @@
         {% if logs.has_previous %}
             <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="left" title="To previous page">
-                <a href="?page={{ logs.previous_page_number }}">Previous</a></button>
+                <a href="?page={{ logs.previous_page_number }}">Previous</a>
+            </button>
         {% endif %}
-
         <span class="current">
             Page {{ logs.number }} of {{ logs.paginator.num_pages }}.
         </span>
-
         {% if logs.has_next %}
             <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="right" title="To next page">
-                <a href="?page={{ logs.next_page_number }}">Next</a></button>
+                <a href="?page={{ logs.next_page_number }}">Next</a>
+            </button>
         {% endif %}
     </span>
 </div>
-<a href="/log_date_filter/">Dates filtering</a> </br>
-<a href="/log_player_id_filter/">Player's ID filtering</a>
 {% endblock %}

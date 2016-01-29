@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
-{% block title %}Players list page{% endblock %}
-
+{% block title %}Players{% endblock %}
 {% block content %}
 <table border="2">
    <tr align="center" bgcolor="grey">
@@ -26,7 +24,9 @@
         <td>
             <!--<button type="button" class="btn btn-default" data-toggle="tooltip"-->
                     <!--data-placement="left" title="Edit player xp">-->
-                <a href="/change_xp/{{ player.id }}/">Edit</a>
+                <a href="/users/{{ player.id }}/">
+                    Edit
+                </a>
             <!--</button>-->
         </td>
     </tr>
@@ -37,7 +37,8 @@
         {% if players.has_previous %}
             <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="left" title="To previous page">
-                <a href="?page={{ players.previous_page_number }}">Previous</a></button>
+                <a href="?page={{ players.previous_page_number }}">Previous</a>
+            </button>
         {% endif %}
         <span class="current">
             Page {{ players.number }} of {{ players.paginator.num_pages }}.
@@ -45,9 +46,13 @@
         {% if players.has_next %}
             <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="right" title="To next page">
-                <a href="?page={{ players.next_page_number }}">Next</a></button>
+                <a href="?page={{ players.next_page_number }}">Next</a>
+            </button>
         {% endif %}
     </span>
 </div>
-
+<form method="POST" action="/users/?email={{ email }}" class="post-form">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit"/>
+</form>
 {% endblock %}

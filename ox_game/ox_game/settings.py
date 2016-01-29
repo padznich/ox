@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CMS_PERMISSION = True
 
 # Application definition
 
@@ -37,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'db_mysql',
+    'db_app',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,4 +111,4 @@ STATIC_URL = '/static/'
 # db_mysql Application
 
 NUMBER_OF_RECORDS_AT_THE_PAGE = 2
-NUMBER_OF_RECORDS_AT_THE_PAGE_LOG = 20
+NUMBER_OF_RECORDS_AT_THE_PAGE_LOG = 3
