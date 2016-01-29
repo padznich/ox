@@ -3,6 +3,10 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+
 from forms import PlayerFilterEmailForm, PlayerChangeForm, LogFilterForm
 from models import Players, LogGameEvents
 from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE
@@ -15,6 +19,7 @@ def show_home_page(request):
     return render(request, 'home.html')
 
 
+@login_required
 def show_users(request):
 
     form = PlayerFilterEmailForm(request.POST or None)
@@ -62,6 +67,7 @@ def show_users(request):
     return render(request, 'players.html', context)
 
 
+@permission_required('polls.can_vote')
 def change_xp(request, player_id):
     # Feature #15
     player = Players.objects.get(id=player_id)
@@ -81,6 +87,7 @@ def change_xp(request, player_id):
     return render(request, 'players_change_xp.html', template_data)
 
 
+@login_required
 def show_logs(request):
     # Feature #22
     form = LogFilterForm(request.POST or None)
@@ -141,10 +148,6 @@ def show_logs(request):
 #
 #   Authorization
 #
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-
-
 class LoggedInMixin(object):
 
     @method_decorator(login_required)
@@ -162,18 +165,3 @@ class ListContactView(LoggedInMixin):
     def get_queryset(self):
 
         return Players.objects.filter(owner=self.request.user)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

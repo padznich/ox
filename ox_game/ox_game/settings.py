@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 CMS_PERMISSION = True
 LOGIN_REDIRECT_URL = "/home/"
+LOGIN_URL = "/login/"
 
 
 # Application definition
