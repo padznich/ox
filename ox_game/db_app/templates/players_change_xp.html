@@ -4,8 +4,7 @@
 <h1>Changing attributes of player {{ player.id }}</h1>
 <h1>{{ player.nickname }} # {{ player.email }}</h1>
 <h1>
-    <form action="/users/{{ player.id }}/" method="post">
-        {% csrf_token %}
+    <form action="/users/{{ player.id }}/" method="post">{% csrf_token %}
         {{ form }}
         <input type="submit" value="Change"/>
     </form>

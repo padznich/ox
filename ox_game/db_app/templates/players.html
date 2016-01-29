@@ -52,7 +52,8 @@
     </span>
 </div>
 <form method="POST" action="/users/?email={{ email }}" class="post-form">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit"/>
+    <br/>
+    {{ form }}
+    <input type="submit" value="Show player"/>
 </form>
 {% endblock %}

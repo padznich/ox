@@ -11,6 +11,9 @@ from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
 # Create your views here.
 
 
+def show_home_page(request):
+    return render(request, 'home.html')
+
 
 def show_users(request):
 
@@ -58,9 +61,9 @@ def show_users(request):
 
     return render(request, 'players.html', context)
 
+
 def change_xp(request, player_id):
     # Feature #15
-    my_view(request)                                # authentication
     player = Players.objects.get(id=player_id)
     form = PlayerChangeForm(data={"xp": player.xp})
     template_data = {
@@ -135,6 +138,30 @@ def show_logs(request):
     return render(request, 'logs.html', context)
 
 
+#
+#   Authorization
+#
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+
+class LoggedInMixin(object):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoggedInMixin, self).dispatch(*args, **kwargs)
+
+
+class ListContactView(LoggedInMixin):
+
+    model = Players
+    template_name = 'players.html'
+
+    # LOGIN_URL = 'django.contrib.auth.views.login'
+
+    def get_queryset(self):
+
+        return Players.objects.filter(owner=self.request.user)
 
 
 
@@ -143,22 +170,10 @@ def show_logs(request):
 
 
 
-# AUTHENTICATION
-from django.contrib import auth
 
-def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = auth.authenticate(nickname=username, password_hash=password)
-    if user is not None and user.is_active:
-        # Правильный пароль и пользователь "активен"
-        auth.login(request, user)
-        # Перенаправление на "правильную" страницу
-        return HttpResponseRedirect("/account/loggedin/")
-    else:
-        # Отображение страницы с ошибкой
-        return HttpResponseRedirect("/account/invalid/")
 
-def my_view(request):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect('/login/?next=%s' % request.path)
+
+
+
+
+

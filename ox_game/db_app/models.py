@@ -76,6 +76,7 @@ class PlayerStats(models.Model):
 
 
 class Players(models.Model):
+
     nickname = models.CharField(unique=True, max_length=50)
     xp = models.IntegerField()
     email = models.CharField(unique=True, max_length=200)

@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CMS_PERMISSION = True
+LOGIN_REDIRECT_URL = "/home/"
+
 
 # Application definition
 
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'ox_game.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [],#'./db_app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

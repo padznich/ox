@@ -29,6 +29,15 @@
         {% endblock %}
   </head>
   <body>
+  <div align="right">
+      {{ user }}
+      {% if user.is_anonymous %}
+      <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
+      {% else %}
+      <a href="{% url 'django.contrib.auth.views.logout' %}">logout</a>
+      {% endif %}
+    </div>
+  <br/>
     <div id="content">
         {% block content %}{% endblock %}
     </div>

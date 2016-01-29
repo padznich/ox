@@ -22,13 +22,13 @@ from db_app import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'', views.show_users),
+    url(r'^home/$', views.show_home_page),
+
     url(r'^users/$', views.show_users),
     url(r'^users/([0-9])+/$', views.change_xp),
 
-
-    (r'^accounts/login/$', views.login),
-
-
     url(r'^logs/$', views.show_logs),
+
+    url(r'^login/$', 'django.contrib.auth.views.login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout'),
 ]
