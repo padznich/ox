@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Players{% endblock %}
+{% block content %}
+<h1>Player's information:</h1>
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="400">nickname</td>
+       <td width="100">xp</td>
+       <td width="400">Email</td>
+       <td width="100">password_hash</td>
+       <td width="100">created</td>
+       <td width="100">updated</td>
+   </tr>
+    <tr align="center">
+        <td>{{ player.id }}</td>
+        <td>{{ player.nickname }}</td>
+        <td>{{ player.xp }}</td>
+        <td>{{ player.email }}</td>
+        <td>********</td>
+        <td>{{ player.created|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ player.updated|date:"SHORT_DATE_FORMAT" }}</td>
+    </tr>
+</table>
+<h1>Player's sessions:</h1>
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="400">player_id</td>
+       <td width="100">sid</td>
+       <td width="400">ip_addr</td>
+       <td width="100">created</td>
+       <td width="100">updated</td>
+   </tr>
+    {% for session in sessions %}
+    <tr align="center">
+       <td>{{ session.id }}</td>
+       <td>{{ session.player_id }}</td>
+       <td>{{ session.sid }}</td>
+       <td>{{ session.ip_addr }}</td>
+       <td>{{ session.created|date:"SHORT_DATE_FORMAT" }}</td>
+       <td>{{ session.updated|date:"SHORT_DATE_FORMAT" }}</td>
+   </tr>
+    {% endfor %}
+</table>
+<h1>Player's statistic:</h1>
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="400">player_id</td>
+       <td width="100">stat_id</td>
+       <td width="400">value</td>
+   </tr>
+    {% for stat in stats %}
+    <tr align="center">
+       <td>{{ stat.id }}</td>
+       <td>{{ stat.player_id }}</td>
+       <td>{{ stat.stat_id }}</td>
+       <td>{{ stat.value }}</td>
+   </tr>
+    {% endfor %}
+</table>
+<h1>Player's logs events:</h1>
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="400">player_id</td>
+       <td width="100">event_type</td>
+       <td width="400">event_data</td>
+       <td width="100">created</td>
+   </tr>
+    {% for log in logs %}
+    <tr align="center">
+       <td>{{ log.id }}</td>
+       <td>{{ log.player_id }}</td>
+       <td>{{ log.event_type }}</td>
+       <td>{{ log.event_data }}</td>
+       <td>{{ log.created|date:"SHORT_DATE_FORMAT" }}</td>
+   </tr>
+    {% endfor %}
+</table>
+<h1>Player's achievements:</h1>
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="400">player_id</td>
+       <td width="100">achievement_id</td>
+       <td width="400">created</td>
+   </tr>
+    {% for achievement in achievements %}
+    <tr align="center">
+       <td>{{ achievement.id }}</td>
+       <td>{{ achievement.player_id }}</td>
+       <td>{{ achievement.achievement_id }}</td>
+       <td>{{ achievement.created|date:"SHORT_DATE_FORMAT" }}</td>
+   </tr>
+    {% endfor %}
+</table>
+{% endblock %}

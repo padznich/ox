@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 
 from forms import PlayerFilterEmailForm, PlayerChangeForm, LogFilterForm
-from models import Players, LogGameEvents
+from models import Players, LogGameEvents, PlayerAchievements, PlayerSessions, PlayerStats
 from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE
 from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
 
@@ -97,15 +97,17 @@ def show_logs(request):
     player_id = request.GET.get('player_id')
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
-    print(player_id)
-    print(from_date)
-    print(to_date)
+    print('DEBUG: player_id', player_id)
+    print('DEBUG: from date', from_date)
+    print('DEBUG: to date', to_date)
 
-    if player_id:
+    if player_id != u'None' and player_id is not None:
+        print('DEBUG')
+        print('DEBUG: player_id', player_id)
         logs = logs.filter(player_id=player_id)
-    if from_date:
+    if from_date != u'None' and from_date is not None:
         logs = logs.filter(created__gte=from_date)
-    if to_date:
+    if to_date != u'None' and to_date is not None:
         logs = logs.filter(created__lte=to_date)
 
     paginator = Paginator(logs, NUMBER_OF_RECORDS_AT_THE_PAGE_LOG)
@@ -168,3 +170,46 @@ class ListContactView(LoggedInMixin):
     def get_queryset(self):
 
         return Players.objects.filter(owner=self.request.user)
+
+
+# Feature #11
+@login_required
+def show_user_info(request):
+
+    player_id = request.GET.get('player_id')
+
+    player = Players.objects.get(id=player_id)
+
+    sessions = PlayerSessions.objects.filter(player_id=player_id).order_by('-id')[:10]
+    sessions = sessions.reverse()
+
+    stats = PlayerStats.objects.filter(player_id=player_id)
+
+    logs = LogGameEvents.objects.filter(player_id=player_id).order_by('-id')[:20]
+    logs = logs.reverse()
+
+    achievements = PlayerAchievements.objects.all()
+    print('DEBUG')
+
+    # LogGameEvents, PlayerAchievements, PlayerSessions, PlayerStats
+
+    context = {
+        "player": player,
+        "sessions": sessions,
+        "stats": stats,
+        "logs": logs,
+        "achievements": achievements,
+        }
+    return render(request, 'user.html', context)
+
+
+
+
+
+
+
+
+
+
+
+

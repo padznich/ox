@@ -45,14 +45,12 @@ class PlayerAchievements(models.Model):
 
 
 class PlayerSessions(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     player = models.ForeignKey('Players')
     sid = models.CharField(unique=True, max_length=40)
     ip_addr = models.CharField(max_length=25, blank=True, null=True)
     created = models.DateTimeField()
     updated = models.DateTimeField()
-
-    def __unicode__(self):
-        return u"sid={}".format(self.sid)
 
     class Meta:
         managed = False

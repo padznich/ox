@@ -20,7 +20,11 @@
    </tr>
     {% for player in players %}
     <tr align="center">
-        <td>{{ player.id }}</td>
+        <td>
+            <a href="/user/?player_id={{ player.id }}" >
+                {{ player.id }}
+            </a>
+        </td>
         <td>{{ player.nickname }}</td>
         <td>{{ player.xp }}</td>
         <td>{{ player.email }}</td>

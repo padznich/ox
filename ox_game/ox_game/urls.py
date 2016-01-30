@@ -27,9 +27,11 @@ urlpatterns = [
     url(r'^users/$', views.show_users),
     url(r'^users/([0-9])+/$', views.change_xp),
 
+    url(r'^user/$', views.show_user_info),
+
     url(r'^logs/$', views.show_logs),
-    # url(r'^logs/filter/$', views.show_logs),
 
     url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
+
 ]
