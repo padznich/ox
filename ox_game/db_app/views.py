@@ -41,28 +41,28 @@ def show_users(request):
         "form": form
     }
 
+    email = request.GET.get('email')
+    if email:
+        players = Players.objects.filter(email=email)
+        form = PlayerFilterEmailForm(request.POST or None)
+        context = {
+            "email": email,
+            "form": form,
+            "players": players,
+        }
+        return render(request, 'players.html', context)
+
+
     if form.is_valid():
         # Feature #7
         email = form.cleaned_data.get("email")
-        form.email = request.POST["email"]          #######
         form = PlayerFilterEmailForm(request.POST or None)
-        players = Players.objects.filter(email=email)
-        paginator = Paginator(players, NUMBER_OF_RECORDS_AT_THE_PAGE)
-        page = request.GET.get('page')
-        try:
-            players = paginator.page(page)
-        except PageNotAnInteger:
-            players = paginator.page(1)
-        except EmptyPage:
-            players = paginator.page(paginator.num_pages)
         context = {
-            "title": 'Filtered Users table',
-            "players": players,
             "email": email,
             "form": form,
         }
 
-        return render(request, 'players.html', context)
+        return HttpResponseRedirect(r'/users/?email={}'.format(email))
 
     return render(request, 'players.html', context)
 
@@ -94,7 +94,21 @@ def show_logs(request):
 
     logs = LogGameEvents.objects.all()
 
-    paginator = Paginator(logs, NUMBER_OF_RECORDS_AT_THE_PAGE)
+    player_id = request.GET.get('player_id')
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+    print(player_id)
+    print(from_date)
+    print(to_date)
+
+    if player_id:
+        logs = logs.filter(player_id=player_id)
+    if from_date:
+        logs = logs.filter(created__gte=from_date)
+    if to_date:
+        logs = logs.filter(created__lte=to_date)
+
+    paginator = Paginator(logs, NUMBER_OF_RECORDS_AT_THE_PAGE_LOG)
     page = request.GET.get('page')
     try:
         logs = paginator.page(page)
@@ -106,7 +120,10 @@ def show_logs(request):
     context = {
         "title": 'Logs table',
         "logs": logs,
-        "form": form
+        "form": form,
+        "player_id": player_id,
+        "from_date": from_date,
+        "to_date": to_date,
     }
 
     if form.is_valid():
@@ -116,32 +133,18 @@ def show_logs(request):
         player_id = form.cleaned_data.get("player_id")
 
         form = LogFilterForm(request.POST or None)
-
-        logs = LogGameEvents.objects.all()
-        if player_id:
-            logs = logs.filter(player_id=player_id)
-        if from_date:
-            logs = logs.filter(created__gte=from_date)
-        if to_date:
-            logs = logs.filter(created__lte=to_date)
-
-        paginator = Paginator(logs, NUMBER_OF_RECORDS_AT_THE_PAGE_LOG)
-        page = request.GET.get('page')
-        try:
-            logs = paginator.page(page)
-        except PageNotAnInteger:
-            logs = paginator.page(1)
-        except EmptyPage:
-            logs = paginator.page(paginator.num_pages)
         context = {
-            "title": 'Filered Logs table',
+            "title": 'Filtered Logs table',
             "logs": logs,
+            "form": form,
+            "player_id": player_id,
             "from_date": from_date,
             "to_date": to_date,
-            "player_id": player_id,
-            "form": form,
         }
-        return render(request, 'logs_filtered.html', context)
+        return HttpResponseRedirect('?player_id={}&from_date={}&to_date={}'.format(player_id,
+                                                                                   from_date,
+                                                                                   to_date))
+
     return render(request, 'logs.html', context)
 
 

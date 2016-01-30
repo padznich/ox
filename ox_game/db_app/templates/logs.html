@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Logs list{% endblock %}
 {% block content %}
+<form method="POST" action="">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Filter"/>
+</form>
+<br/>
 <table border="2">
    <tr align="center" bgcolor="grey">
        <td height="20" width="100">id</td>
@@ -14,12 +19,13 @@
         <td>{{ log.id }}</td>
         <td>
             <!--<a href="/log/{{ log.player_id }}/" target="_self" title="filtering by player id">-->
+            <!--<a href="/log/{{ log.player_id }}/" target="_self" title="filtering by player id">-->
                 {{ log.player_id }}
             <!--</a>-->
         </td>
         <td>{{ log.event_type }}</td>
         <td>{{ log.event_data }}</td>
-        <td>{{ log.created|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ log.created|date:"Y-m-d" }}</td>
     </tr>
     {% endfor %}
 </table>
@@ -28,7 +34,9 @@
         {% if logs.has_previous %}
             <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="left" title="To previous page">
-                <a href="?page={{ logs.previous_page_number }}">Previous</a>
+<a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.previous_page_number }}">
+    Previous
+</a>
             </button>
         {% endif %}
         <span class="current">
@@ -37,13 +45,11 @@
         {% if logs.has_next %}
             <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="right" title="To next page">
-                <a href="?page={{ logs.next_page_number }}">Next</a>
+<a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.next_page_number }}">
+    Next
+</a>
             </button>
         {% endif %}
     </span>
 </div>
-<form method="POST" action="">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit"/>
-</form>
 {% endblock %}

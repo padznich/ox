@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Players{% endblock %}
 {% block content %}
+<form method="POST" action="">{% csrf_token %}
+    <br/>
+    {{ form }}
+    <input type="submit" value="Show player"/>
+</form>
+<br/>
 <table border="2">
    <tr align="center" bgcolor="grey">
        <td height="20" width="100">id</td>
@@ -51,9 +57,4 @@
         {% endif %}
     </span>
 </div>
-<form method="POST" action="/users/?email={{ email }}" class="post-form">{% csrf_token %}
-    <br/>
-    {{ form }}
-    <input type="submit" value="Show player"/>
-</form>
 {% endblock %}
