@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Changing Player Xp{% endblock %}
 {% block content %}
-<h1>Changing attributes of player {{ player.id }}</h1>
-<h1>{{ player.nickname }} # {{ player.email }}</h1>
+<h1><p1>Changing attributes for player {{ player.nickname }}</p1></h1>
+<h1><p1>{{ player.nickname }}'s id: {{ player.id }}</p1></h1>
+<h1><p>{{ player.email }}</p></h1>
 <h1>
     <form action="/users/{{ player.id }}/" method="post">{% csrf_token %}
-        {{ form }}
+        <p>{{ form }}</p>
         <input type="submit" value="Change"/>
     </form>
 </h1>
