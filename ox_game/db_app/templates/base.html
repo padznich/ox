@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <!--Feature #5-->
+<header class="navbar-inverse" role="banner">
 <html lang="en">
 <head>
+    <style>
+        p {color: orange}
+        p1 {color: lightblue}
+        p2 {color: magenta}
+        p3 {color: darkred}
+    </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +26,6 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
       <br id="sidebar">
-<header class="navbar-inverse" role="banner">
 <div class="container">
 <nav role="navigation">
   <div class="container-fluid">
@@ -32,19 +38,18 @@
   </div>
 </nav>
 </div>
-</header>
-    {% block sidebar %}{% endblock %}
-</head>
-  <body>
-  <div align="right">
-      {{ user }}
+    <div align="right">
+      <p>{{ user }}
       {% if user.is_anonymous %}
       <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
       {% else %}
       <a href="{% url 'django.contrib.auth.views.logout' %}">logout</a>
       {% endif %}
+      </p>
     </div>
-  <br/>
+    {% block sidebar %}{% endblock %}
+</head>
+  <body>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
@@ -55,3 +60,4 @@
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
   </body>
 </html>
+</header>

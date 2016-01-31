@@ -3,11 +3,11 @@
 {% block content %}
 <form method="POST" action="">{% csrf_token %}
     <br/>
-    {{ form }}
+    <p1>{{ form }}</p1>
     <input type="submit" value="Show player"/>
 </form>
 <br/>
-<table border="2">
+<table>
    <tr align="center" bgcolor="grey">
        <td height="20" width="100">id</td>
        <td width="400">nickname</td>
@@ -25,12 +25,12 @@
                 {{ player.id }}
             </a>
         </td>
-        <td>{{ player.nickname }}</td>
-        <td>{{ player.xp }}</td>
-        <td>{{ player.email }}</td>
+        <td><p>{{ player.nickname }}</p></td>
+        <td><p>{{ player.xp }}</p></td>
+        <td><p>{{ player.email }}</p></td>
         <td>********</td>
-        <td>{{ player.created|date:"SHORT_DATE_FORMAT" }}</td>
-        <td>{{ player.updated|date:"SHORT_DATE_FORMAT" }}</td>
+        <td><p>{{ player.created|date:"Y-m-d" }}</p></td>
+        <td><p>{{ player.updated|date:"Y-m-d" }}</p></td>
         <td>
             <!--<button type="button" class="btn btn-default" data-toggle="tooltip"-->
                     <!--data-placement="left" title="Edit player xp">-->
@@ -45,19 +45,24 @@
 <div class="pagination">
     <span class="step-links">
         {% if players.has_previous %}
-            <button type="button" class="btn btn-default" data-toggle="tooltip"
+                <a href="?page={{ players.previous_page_number }}">
+                    <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="left" title="To previous page">
-                <a href="?page={{ players.previous_page_number }}">Previous</a>
-            </button>
+                        Previous
+                    </button>
+                </a>
+
         {% endif %}
         <span class="current">
-            Page {{ players.number }} of {{ players.paginator.num_pages }}.
+            <p1>Page {{ players.number }} of {{ players.paginator.num_pages }}.</p1>
         </span>
         {% if players.has_next %}
-            <button type="button" class="btn btn-default" data-toggle="tooltip"
+                <a href="?page={{ players.next_page_number }}">
+                    <button type="button" class="btn btn-default" data-toggle="tooltip"
                     data-placement="right" title="To next page">
-                <a href="?page={{ players.next_page_number }}">Next</a>
-            </button>
+                        Next
+                    </button>
+                </a>
         {% endif %}
     </span>
 </div>

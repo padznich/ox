@@ -16,7 +16,54 @@ from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
 
 
 def show_home_page(request):
-    return render(request, 'home.html')
+
+    players = Players.objects.all()
+    #
+    #   Date From
+    #
+    date_from_post = request.POST.get('date_from')
+    date_from_get = request.GET.get('date_from')
+    print('DEBUG: GET {}'.format(request.GET))
+    print('DEBUG: POST {}'.format(request.POST))
+    print('DEBUG: date_from_post {}'.format(date_from_post))
+    print('DEBUG: date_from_get {}'.format(date_from_get))
+    if date_from_post:
+        return HttpResponseRedirect('?date_from={}'.format(date_from_post))
+    if date_from_get:
+        players = Players.objects.filter(created__gte=date_from_get)
+    #
+    #   ID
+    #
+    id_post = request.POST.get('id')
+    id_get = request.GET.get('id')
+    print('DEBUG: GET {}'.format(request.GET))
+    print('DEBUG: POST {}'.format(request.POST))
+    print('DEBUG: id_post {}'.format(id_post))
+    print('DEBUG: id_get {}'.format(id_get))
+    if id_post:
+        return HttpResponseRedirect('?id={}'.format(id_post))
+    if id_get:
+        players = Players.objects.filter(id=id_get)
+    #
+    #   Email
+    #
+    email_post = request.POST.get('email')
+    email_get = request.GET.get('email')
+    print('DEBUG: GET {}'.format(request.GET))
+    print('DEBUG: POST {}'.format(request.POST))
+    print('DEBUG: email_post {}'.format(email_post))
+    print('DEBUG: email_get {}'.format(email_get))
+    if email_post:
+        return HttpResponseRedirect('?email={}'.format(email_post))
+    if email_get:
+        players = Players.objects.filter(email=email_get)
+
+
+    context = {
+        "players": players,
+    }
+
+    return render(request, 'home.html', context)
 
 
 @login_required
@@ -97,13 +144,8 @@ def show_logs(request):
     player_id = request.GET.get('player_id')
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
-    print('DEBUG: player_id', player_id)
-    print('DEBUG: from date', from_date)
-    print('DEBUG: to date', to_date)
 
     if player_id != u'None' and player_id is not None:
-        print('DEBUG')
-        print('DEBUG: player_id', player_id)
         logs = logs.filter(player_id=player_id)
     if from_date != u'None' and from_date is not None:
         logs = logs.filter(created__gte=from_date)

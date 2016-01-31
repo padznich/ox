@@ -6,7 +6,7 @@
     <input type="submit" value="Filter"/>
 </form>
 <br/>
-<table border="2">
+<table border="1">
    <tr align="center" bgcolor="grey">
        <td height="20" width="100">id</td>
        <td width="100">player_id</td>
@@ -16,39 +16,39 @@
    </tr>
     {% for log in logs %}
     <tr align="center">
-        <td>{{ log.id }}</td>
-        <td>
+        <td><p>{{ log.id }}</p></td>
+        <td><p>
             <!--<a href="/log/{{ log.player_id }}/" target="_self" title="filtering by player id">-->
             <!--<a href="/log/{{ log.player_id }}/" target="_self" title="filtering by player id">-->
-                {{ log.player_id }}
+                {{ log.player_id }}</p>
             <!--</a>-->
         </td>
-        <td>{{ log.event_type }}</td>
-        <td>{{ log.event_data }}</td>
-        <td>{{ log.created|date:"Y-m-d" }}</td>
+        <td><p>{{ log.event_type }}</p></td>
+        <td><p>{{ log.event_data }}</p></td>
+        <td><p>{{ log.created|date:"Y-m-d" }}</p></td>
     </tr>
     {% endfor %}
 </table>
 <div class="pagination">
     <span class="step-links">
         {% if logs.has_previous %}
-            <button type="button" class="btn btn-default" data-toggle="tooltip"
-                    data-placement="left" title="To previous page">
 <a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.previous_page_number }}">
+    <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    data-placement="left" title="To previous page">
     Previous
+    </button>
 </a>
-            </button>
         {% endif %}
         <span class="current">
-            Page {{ logs.number }} of {{ logs.paginator.num_pages }}.
+            <p1>Page {{ logs.number }} of {{ logs.paginator.num_pages }}.</p1>
         </span>
         {% if logs.has_next %}
-            <button type="button" class="btn btn-default" data-toggle="tooltip"
-                    data-placement="right" title="To next page">
 <a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.next_page_number }}">
+    <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    data-placement="right" title="To next page">
     Next
+    </button>
 </a>
-            </button>
         {% endif %}
     </span>
 </div>

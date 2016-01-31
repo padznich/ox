@@ -1,7 +1,54 @@
 {% extends "base.html" %}
 {% block title %}Home page{% endblock %}
 {% block content %}
-
-<h1>Welcome!</h1>
-
+<header class="navbar-inverse" role="presentation">
+    <h1>Welcome!</h1>
+<!--<div class="container">-->
+    <div align="left">
+        <form method="POST" action="">{% csrf_token %}
+            <input type="date" name="date_from"/>
+            <input type="submit" value="Date From" src="?date_from={{ date_from }">
+        </form>
+    </div>
+    <div align="left">
+        <form method="POST" action="">{% csrf_token %}
+            <input type="number" name="id"/>
+            <input type="submit" value="ID filter" src="?id={{ id }">
+        </form>
+    </div>
+    <div align="left">
+        <form method="POST" action="">{% csrf_token %}
+            <input type="email" name="email"/>
+            <input type="submit" value="Email filter" src="?email={{ email }">
+        </form>
+    </div>
+<!--</div>-->
+</header>
+<br/>
+<table border="2">
+   <tr align="center" bgcolor="grey">
+       <td height="20" width="100">id</td>
+       <td width="400">nickname</td>
+       <td width="100">xp</td>
+       <td width="400">Email</td>
+       <td width="100">password_hash</td>
+       <td width="100">created</td>
+       <td width="100">updated</td>
+   </tr>
+    {% for player in players %}
+    <tr align="center">
+        <td>
+            <a href="/user/?player_id={{ player.id }}" >
+                {{ player.id }}
+            </a>
+        </td>
+        <td><p>{{ player.nickname }}</p></td>
+        <td><p>{{ player.xp }}</p></td>
+        <td><p>{{ player.email }}</p></td>
+        <td>********</td>
+        <td><p>{{ player.created|date:"Y-m-d" }}</p></td>
+        <td><p>{{ player.updated|date:"Y-m-d" }}</p></td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
