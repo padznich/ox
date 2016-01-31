@@ -19,9 +19,9 @@ FOLDER: pwt_xo
 # adjust setting.py with mysql
 #
 
-(env) pyton manage.py startapp db_mysql
-(env) pyton manage.py inspectdb > db_mysql/models.py
-(env) pyton manage.py syncdb        # and createsuperuser
+(env) python manage.py startapp db_mysql
+(env) python manage.py inspectdb > db_mysql/models.py
+(env) python manage.py syncdb        # and createsuperuser
 
 #
 # adjust admin.py with Players, PlayerAchievements, PlayerSessions, PlayerStats, LogGameEvents
@@ -50,8 +50,13 @@ ________________________________________________________
 (env) grunt test
 (env) grunt docs
 (env) grunt
-(env)
-(env)
+
+________________________________________________________
+
+sudo apt-get install redis-server
+sudo pip install django-redis-cache
+(env) sudo apt-get install redis-server
+(env) pip install django-redis-cache 
 (env)
 
 

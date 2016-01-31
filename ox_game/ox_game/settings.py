@@ -45,6 +45,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,6 +54,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'ox_game.urls'
@@ -115,7 +117,17 @@ STATICFILES_DIRS = (
 STATIC_URL = '/static/'
 
 
-# db_mysql Application
+# Redis
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '/var/run/redis/redis.sock',
+    },
+}
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+
+# db_mysql Application
 NUMBER_OF_RECORDS_AT_THE_PAGE = 2
 NUMBER_OF_RECORDS_AT_THE_PAGE_LOG = 3
