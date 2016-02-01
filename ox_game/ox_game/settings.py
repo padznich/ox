@@ -35,12 +35,16 @@ LOGIN_URL = "/login/"
 # Application definition
 
 INSTALLED_APPS = (
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party apps
+    'crispy_forms',
+    # my apps
     'db_app',
 )
 
@@ -126,6 +130,10 @@ CACHES = {
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+
+# django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 # db_mysql Application

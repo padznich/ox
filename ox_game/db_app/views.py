@@ -14,7 +14,7 @@ from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
 
 # Create your views here.
 
-
+@login_required
 def show_home_page(request):
 
     players = Players.objects.all()

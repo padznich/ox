@@ -32,6 +32,6 @@ urlpatterns = [
     url(r'^logs/$', views.show_logs),
 
     url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.login'),
 
 ]

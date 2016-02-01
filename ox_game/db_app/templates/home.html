@@ -1,9 +1,16 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block title %}Home page{% endblock %}
 {% block content %}
 <header class="navbar-inverse" role="presentation">
-    <h1>Welcome!</h1>
+    <div class="table">
+        <ul>
+            <p1><h1>Welcome!</h1></p1>
+        </ul>
+    </div>
 <!--<div class="container">-->
+<div class="row">
+    <div class="col-md-3">
     <div align="left">
         <form method="POST" action="">{% csrf_token %}
             <input type="date" name="date_from"/>
@@ -22,6 +29,8 @@
             <input type="submit" value="Email filter" src="?email={{ email }">
         </form>
     </div>
+    </div>
+</div>
 <!--</div>-->
 </header>
 <br/>

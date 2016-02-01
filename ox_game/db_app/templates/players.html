@@ -1,11 +1,16 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block title %}Players{% endblock %}
 {% block content %}
-<form method="POST" action="">{% csrf_token %}
-    <br/>
-    <p1>{{ form }}</p1>
-    <input type="submit" value="Show player"/>
-</form>
+<div class="row">
+    <div class="col-md-3">
+        <form method="POST" action="">{% csrf_token %}
+            <br/>
+            {{ form|crispy }}
+            <input class="btn btn-primary" type="submit" value="Show player"/>
+        </form>
+    </div>
+</div>
 <br/>
 <table border="1">
    <tr align="center" bgcolor="grey">
@@ -32,12 +37,9 @@
         <td><p>{{ player.created|date:"Y-m-d" }}</p></td>
         <td><p>{{ player.updated|date:"Y-m-d" }}</p></td>
         <td>
-            <!--<button type="button" class="btn btn-default" data-toggle="tooltip"-->
-                    <!--data-placement="left" title="Edit player xp">-->
-                <a href="/users/{{ player.id }}/">
-                    Edit
-                </a>
-            <!--</button>-->
+            <a href="/users/{{ player.id }}/">
+                Edit
+            </a>
         </td>
     </tr>
     {% endfor %}
@@ -46,7 +48,7 @@
     <span class="step-links">
         {% if players.has_previous %}
                 <a href="?page={{ players.previous_page_number }}">
-                    <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
                     data-placement="left" title="To previous page">
                         Previous
                     </button>
@@ -58,7 +60,7 @@
         </span>
         {% if players.has_next %}
                 <a href="?page={{ players.next_page_number }}">
-                    <button type="button" class="btn btn-default" data-toggle="tooltip"
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
                     data-placement="right" title="To next page">
                         Next
                     </button>
