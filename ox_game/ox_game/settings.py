@@ -122,13 +122,39 @@ STATIC_URL = '/static/'
 
 
 # Redis
-CACHES = {
-    'default': {
-        'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': '/var/run/redis/redis.sock',
-    },
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'redis_cache.RedisCache',
+#         'LOCATION': [
+#             '127.0.0.1:6379',   # Primary       Read/Write
+#             '127.0.0.1:6380',   # Secondary     Read only
+#         ],
+#         'default': {
+#             'OPTIONS': {
+#                 'DB': 1,
+#                 'PASSWORD': 'pass',
+#                 'MASTER_CACHE': '127.0.0.1:6379',
+#                 'SLAVE_CACHE': '127.0.0.1:6380',
+#                 'PARSER_CLASS': 'redis.connection.HiredisParser',
+#                 'SOCKET_TIMEOUT': 5,
+#                 'SOCKET_CONNECT_TIMEOUT': 5,
+#                 'COMPRESSOR_CLASS': 'redis_cache.compressors.ZLibCompressor',
+#                 'COMPRESSOR_CLASS_KWARGS': {
+#                     'level': 0,  # 0 - 9; 0 - no compression; 1 - fastest, biggest; 9 - slowest, smallest
+#                 },
+#             }
+#         }
+#     },
+# }
+'''
+LOCATION Schemes:
 
+127.0.0.1:6379
+/path/to/socket
+redis://[:password]@localhost:6379/0
+rediss://[:password]@localhost:6379/0
+unix://[:password]@/path/to/socket.sock?db=0
+'''
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 
