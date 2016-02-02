@@ -123,14 +123,15 @@ def change_xp(request, player_id):
         "form": form,
         "player": player
     }
-
+    print('DEBUG: before POST')
     if request.method == 'POST':
         form = PlayerChangeForm(request.POST)
         if form.is_valid():
-            player.xp = form.cleaned_data["xp"]
+            print('DEBUG: xp before', player.xp)
+            player.xp = player.xp + form.cleaned_data["xp"]
             player.save()
+            print('DEBUG: xp after', player.xp)
             return HttpResponseRedirect("/users/")
-
     return render(request, 'players_change_xp.html', template_data)
 
 

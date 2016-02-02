@@ -58,7 +58,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+            # 'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'ox_game.urls'
@@ -146,15 +146,7 @@ STATIC_URL = '/static/'
 #         }
 #     },
 # }
-'''
-LOCATION Schemes:
 
-127.0.0.1:6379
-/path/to/socket
-redis://[:password]@localhost:6379/0
-rediss://[:password]@localhost:6379/0
-unix://[:password]@/path/to/socket.sock?db=0
-'''
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 
@@ -163,5 +155,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 # db_mysql Application
-NUMBER_OF_RECORDS_AT_THE_PAGE = 2
-NUMBER_OF_RECORDS_AT_THE_PAGE_LOG = 3
+NUMBER_OF_RECORDS_AT_THE_PAGE = 20
+NUMBER_OF_RECORDS_AT_THE_PAGE_LOG = 10
