@@ -20,8 +20,20 @@ class Command(BaseCommand):
         log.event_type = 000
         log.event_data = 'spam'
         log.is_finished = bool(random.randint(0, 1))
-        log.created = datetime.datetime.now()
+        log.created = "2016-01-{}".format(random.randint(1, 30))
         log.save()
+
+    def _create_session(self, player_object, session_index):
+        session = PlayerSessions()
+        session_unique_part = str(session_index) + str(datetime.datetime.now())
+        session_uuid = hashlib.sha1(session_unique_part).hexdigest()
+        session.player = player_object
+        session.sid = session_uuid
+        session.is_finished = bool(random.randint(0, 1))
+        session_ttl = random.randint(10, 7200)
+        session.updated = datetime.datetime.now() + datetime.timedelta(seconds=session_ttl)
+        session.created = datetime.datetime.now() + datetime.timedelta(seconds=session_ttl)
+        session.save()
 
     def _create_player(self, player_index, options):
         player = Players()
@@ -30,18 +42,16 @@ class Command(BaseCommand):
         player.nickname = "test_{}".format(nickname_unique_hash)
         player.email = "{}@tut.by".format(player.nickname)
         player.xp = 0
-        player.created = datetime.datetime.now()
-        player.updated = datetime.datetime.now()
+        player.created = "2016-01-{}".format(random.randint(1, 30))
+        player.updated = "2016-01-{}".format(random.randint(1, 30))
         player.save()
 
         for log_index in xrange(options["log_count_per_user"]):
             self._create_log(player, log_index)
 
+        for session_index in xrange(options["session_count_per_user"]):
+            self._create_session(player, session_index)
+
     def handle(self, *args, **options):
         for i in xrange(options["player_count"]):
             self._create_player(i, options)
-
-
-if __name__ == '__main__':
-    c = Command()
-    c.handle({"player_count": 5})

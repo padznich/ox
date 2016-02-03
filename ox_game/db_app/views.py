@@ -117,20 +117,20 @@ def show_users(request):
 @permission_required('polls.can_vote')
 def change_xp(request, player_id):
     # Feature #15
+    print('DEBUG: player_id: {}'.format(player_id))
+    print('DEBUG: get {}'.format(request.path.split('/')[2]))
+    player_id = request.path.split('/')[2]
     player = Players.objects.get(id=player_id)
     form = PlayerChangeForm(data={"xp": player.xp})
     template_data = {
         "form": form,
         "player": player
     }
-    print('DEBUG: before POST')
     if request.method == 'POST':
         form = PlayerChangeForm(request.POST)
         if form.is_valid():
-            print('DEBUG: xp before', player.xp)
             player.xp = player.xp + form.cleaned_data["xp"]
             player.save()
-            print('DEBUG: xp after', player.xp)
             return HttpResponseRedirect("/users/")
     return render(request, 'players_change_xp.html', template_data)
 
