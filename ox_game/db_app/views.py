@@ -1,6 +1,5 @@
 # coding=utf-8
 from django.shortcuts import render
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required
@@ -16,17 +15,13 @@ from ox_game.settings import NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
 
 @login_required
 def show_home_page(request):
-
+    '''
     players = Players.objects.all()
     #
     #   Date From
     #
     date_from_post = request.POST.get('date_from')
     date_from_get = request.GET.get('date_from')
-    print('DEBUG: GET {}'.format(request.GET))
-    print('DEBUG: POST {}'.format(request.POST))
-    print('DEBUG: date_from_post {}'.format(date_from_post))
-    print('DEBUG: date_from_get {}'.format(date_from_get))
     if date_from_post:
         return HttpResponseRedirect('?date_from={}'.format(date_from_post))
     if date_from_get:
@@ -36,10 +31,6 @@ def show_home_page(request):
     #
     id_post = request.POST.get('id')
     id_get = request.GET.get('id')
-    print('DEBUG: GET {}'.format(request.GET))
-    print('DEBUG: POST {}'.format(request.POST))
-    print('DEBUG: id_post {}'.format(id_post))
-    print('DEBUG: id_get {}'.format(id_get))
     if id_post:
         return HttpResponseRedirect('?id={}'.format(id_post))
     if id_get:
@@ -49,10 +40,6 @@ def show_home_page(request):
     #
     email_post = request.POST.get('email')
     email_get = request.GET.get('email')
-    print('DEBUG: GET {}'.format(request.GET))
-    print('DEBUG: POST {}'.format(request.POST))
-    print('DEBUG: email_post {}'.format(email_post))
-    print('DEBUG: email_get {}'.format(email_get))
     if email_post:
         return HttpResponseRedirect('?email={}'.format(email_post))
     if email_get:
@@ -62,54 +49,58 @@ def show_home_page(request):
     context = {
         "players": players,
     }
-
-    return render(request, 'home.html', context)
+    '''
+    return render(request, 'home.html')
 
 
 @login_required
 def show_users(request):
 
     form = PlayerFilterEmailForm(request.POST or None)
-    players = Players.objects.all()
 
-    # Feature #6
-    paginator = Paginator(players, NUMBER_OF_RECORDS_AT_THE_PAGE)
     page = request.GET.get('page')
-    try:
-        players = paginator.page(page)
-    except PageNotAnInteger:
-        players = paginator.page(1)
-    except EmptyPage:
-        players = paginator.page(paginator.num_pages)
+    if page == u'None' or page is None:
+        page = 1
+    page = int(page)
+    prev_page = page - 1
+    next_page = page + 1
+
+    pages_count = Players.objects.count()
+    pages_amount = pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE
+    if pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE != pages_count / float(NUMBER_OF_RECORDS_AT_THE_PAGE):
+        pages_amount += 1
+
+    players = Players.objects.all()[NUMBER_OF_RECORDS_AT_THE_PAGE*prev_page:NUMBER_OF_RECORDS_AT_THE_PAGE*page]
 
     context = {
         "title": 'Users table',
         "players": players,
-        "form": form
+        "form": form,
+        "page": page,
+        "pages_amount": pages_amount,
+        "prev_page": prev_page,
+        "next_page": next_page,
+        "filtered": 0,
     }
 
-    email = request.GET.get('email')
-    if email:
-        players = Players.objects.filter(email=email)
+    email_post = request.POST.get('email')
+    email_get = request.GET.get('email')
+    if email_post:
+        return HttpResponseRedirect('?email={}'.format(email_post))
+    if email_get:
+        players = Players.objects.filter(email=email_get)
         form = PlayerFilterEmailForm(request.POST or None)
         context = {
-            "email": email,
+            "email": email_get,
             "form": form,
             "players": players,
+            "page": page,
+            "pages_amount": pages_amount,
+            "prev_page": prev_page,
+            "next_page": next_page,
+            "filtered": 1,
         }
         return render(request, 'players.html', context)
-
-
-    if form.is_valid():
-        # Feature #7
-        email = form.cleaned_data.get("email")
-        form = PlayerFilterEmailForm(request.POST or None)
-        context = {
-            "email": email,
-            "form": form,
-        }
-
-        return HttpResponseRedirect(r'/users/?email={}'.format(email))
 
     return render(request, 'players.html', context)
 
@@ -117,8 +108,7 @@ def show_users(request):
 @permission_required('polls.can_vote')
 def change_xp(request, player_id):
     # Feature #15
-    print('DEBUG: player_id: {}'.format(player_id))
-    print('DEBUG: get {}'.format(request.path.split('/')[2]))
+
     player_id = request.path.split('/')[2]
     player = Players.objects.get(id=player_id)
     form = PlayerChangeForm(data={"xp": player.xp})
@@ -140,12 +130,29 @@ def show_logs(request):
     # Feature #22
     form = LogFilterForm(request.POST or None)
 
-    logs = LogGameEvents.objects.all()
+    page = request.GET.get('page')
+    if page == u'None' or page is None:
+        page = 1
+    page = int(page)
+    prev_page = page - 1
+    next_page = page + 1
+
+    pages_count = LogGameEvents.objects.count()
+    pages_amount = pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
+    if pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE != pages_count / float(NUMBER_OF_RECORDS_AT_THE_PAGE_LOG):
+        pages_amount += 1
+
+    logs = LogGameEvents.objects.all()[
+           NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*prev_page:NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*page
+           ]
 
     player_id = request.GET.get('player_id')
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
-
+    filtered = 0
+    if player_id or from_date or to_date:
+        filtered = 1
+        logs = LogGameEvents.objects
     if player_id != u'None' and player_id is not None:
         logs = logs.filter(player_id=player_id)
     if from_date != u'None' and from_date is not None:
@@ -153,14 +160,14 @@ def show_logs(request):
     if to_date != u'None' and to_date is not None:
         logs = logs.filter(created__lte=to_date)
 
-    paginator = Paginator(logs, NUMBER_OF_RECORDS_AT_THE_PAGE_LOG)
-    page = request.GET.get('page')
-    try:
-        logs = paginator.page(page)
-    except PageNotAnInteger:
-        logs = paginator.page(1)
-    except EmptyPage:
-        logs = paginator.page(paginator.num_pages)
+    # paginator = Paginator(logs, NUMBER_OF_RECORDS_AT_THE_PAGE_LOG)
+    # page = request.GET.get('page')
+    # try:
+    #     logs = paginator.page(page)
+    # except PageNotAnInteger:
+    #     logs = paginator.page(1)
+    # except EmptyPage:
+    #     logs = paginator.page(paginator.num_pages)
 
     context = {
         "title": 'Logs table',
@@ -169,14 +176,31 @@ def show_logs(request):
         "player_id": player_id,
         "from_date": from_date,
         "to_date": to_date,
+        "page": page,
+        "pages_amount": pages_amount,
+        "prev_page": prev_page,
+        "next_page": next_page,
+        "filtered": filtered,
     }
 
     if form.is_valid():
-
         from_date = form.cleaned_data.get("from_date")
         to_date = form.cleaned_data.get("to_date")
         player_id = form.cleaned_data.get("player_id")
 
+        out_redirect_string = "?"
+        if player_id:
+            out_redirect_string += "player_id={}".format(player_id)
+            if from_date:
+                out_redirect_string += "&from_date={}".format(from_date)
+            if to_date:
+                out_redirect_string += "&to_date={}".format(to_date)
+        elif from_date:
+                out_redirect_string += "from_date={}".format(from_date)
+                if to_date:
+                    out_redirect_string += "&to_date={}".format(to_date)
+        else:
+            out_redirect_string += "to_date={}".format(to_date)
         form = LogFilterForm(request.POST or None)
         context = {
             "title": 'Filtered Logs table',
@@ -185,10 +209,13 @@ def show_logs(request):
             "player_id": player_id,
             "from_date": from_date,
             "to_date": to_date,
+            "page": page,
+            "pages_amount": pages_amount,
+            "prev_page": prev_page,
+            "next_page": next_page,
+            "filtered": 1,
         }
-        return HttpResponseRedirect('?player_id={}&from_date={}&to_date={}'.format(player_id,
-                                                                                   from_date,
-                                                                                   to_date))
+        return HttpResponseRedirect(out_redirect_string)
 
     return render(request, 'logs.html', context)
 
@@ -232,7 +259,6 @@ def show_user_info(request):
     logs = logs.reverse()
 
     achievements = PlayerAchievements.objects.all()
-    print('DEBUG')
 
     # LogGameEvents, PlayerAchievements, PlayerSessions, PlayerStats
 

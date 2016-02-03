@@ -1,13 +1,16 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block title %}Changing Player Xp{% endblock %}
 {% block content %}
 <h1><p1>Changing attributes for player {{ player.nickname }}</p1></h1>
 <h1><p1>{{ player.nickname }}'s id: {{ player.id }}</p1></h1>
 <h1><p>{{ player.email }}</p></h1>
 <h1>
-    <form action="/users/{{ player.id }}/" method="post">{% csrf_token %}
-        <p>{{ form }}</p>
-        <input type="submit" value="Change"/>
-    </form>
+    <div class="col-md-3">
+        <form action="/users/{{ player.id }}/" method="post">{% csrf_token %}
+            <p>{{ form|crispy }}</p>
+            <input class="btn btn-primary" type="submit" value="Change"/>
+        </form>
+    </div>
 </h1>
 {% endblock %}

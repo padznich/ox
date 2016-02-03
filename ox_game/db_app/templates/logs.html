@@ -11,6 +11,7 @@
     </div>
 </div>
 <br/>
+{% if logs %}
 <table border="1">
    <tr align="center" bgcolor="grey">
        <td height="20" width="100">id</td>
@@ -34,27 +35,55 @@
     </tr>
     {% endfor %}
 </table>
-<div class="pagination">
+<div class="pages">
     <span class="step-links">
-        {% if logs.has_previous %}
-<a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.previous_page_number }}">
-    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
+        {% if prev_page %}
+        <a href="?page={{ prev_page }}">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
                     data-placement="left" title="To previous page">
-    Previous
-    </button>
-</a>
+                Previous
+            </button>
+        </a>
         {% endif %}
+        {% if not filtered %}
         <span class="current">
-            <p1>Page {{ logs.number }} of {{ logs.paginator.num_pages }}.</p1>
+            <p1>Page {{ page }} of {{ pages_amount }}</p1>
         </span>
-        {% if logs.has_next %}
-<a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.next_page_number }}">
-    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
+        {% endif %}
+        {% if next_page <= pages_amount %}
+        <a href="?page={{ next_page }}">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
                     data-placement="right" title="To next page">
-    Next
-    </button>
-</a>
+                Next
+            </button>
+        </a>
         {% endif %}
     </span>
 </div>
+<!--<div class="pagination">-->
+    <!--<span class="step-links">-->
+        <!--{% if logs.has_previous %}-->
+<!--<a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.previous_page_number }}">-->
+    <!--<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"-->
+                    <!--data-placement="left" title="To previous page">-->
+    <!--Previous-->
+    <!--</button>-->
+<!--</a>-->
+        <!--{% endif %}-->
+        <!--<span class="current">-->
+            <!--<p1>Page {{ logs.number }} of {{ logs.paginator.num_pages }}.</p1>-->
+        <!--</span>-->
+        <!--{% if logs.has_next %}-->
+<!--<a href="?player_id={{ player_id }}&from_date={{ from_date }}&to_date={{ to_date }}&page={{ logs.next_page_number }}">-->
+    <!--<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"-->
+                    <!--data-placement="right" title="To next page">-->
+    <!--Next-->
+    <!--</button>-->
+<!--</a>-->
+        <!--{% endif %}-->
+    <!--</span>-->
+<!--</div>-->
+{% else %}
+<h1><p3>No matches.</p3></h1>
+{% endif %}
 {% endblock %}
