@@ -47,6 +47,7 @@
 </table>
 <div class="pages">
     <span class="step-links">
+        {% if not filtered %}
         {% if prev_page %}
         <a href="?page={{ prev_page }}">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
@@ -55,11 +56,9 @@
             </button>
         </a>
         {% endif %}
-        {% if not filtered %}
         <span class="current">
             <p1>Page {{ page }} of {{ pages_amount }}</p1>
         </span>
-        {% endif %}
         {% if next_page <= pages_amount %}
         <a href="?page={{ next_page }}">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
@@ -67,6 +66,7 @@
                 Next
             </button>
         </a>
+        {% endif %}
         {% endif %}
     </span>
 </div>

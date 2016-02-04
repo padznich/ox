@@ -4,7 +4,7 @@
 {% block content %}
 <div class="row">
     <div class="col-md-3">
-        <form method="POST" action="">{% csrf_token %}
+        <form method="GET" action="">
             <p>{{ form|crispy }}</p>
             <input class="btn btn-primary" type="submit" value="Show filtered events"/>
         </form>
@@ -38,6 +38,14 @@
 <div class="pages">
     <span class="step-links">
         {% if prev_page %}
+        {% if player_id or from_date or to_date %}
+        <a href="{{ out_redirect_string }}&page={{ prev_page }}">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
+                    data-placement="left" title="To previous page">
+                Previous
+            </button>
+        </a>
+        {% else %}
         <a href="?page={{ prev_page }}">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
                     data-placement="left" title="To previous page">
@@ -45,18 +53,28 @@
             </button>
         </a>
         {% endif %}
+        {% endif %}
         {% if not filtered %}
         <span class="current">
             <p1>Page {{ page }} of {{ pages_amount }}</p1>
         </span>
         {% endif %}
         {% if next_page <= pages_amount %}
+        {% if player_id or from_date or to_date %}
+        <a href="{{ out_redirect_string }}&page={{ next_page }}">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
+                    data-placement="right" title="To next page">
+                Next
+            </button>
+        </a>
+        {% else %}
         <a href="?page={{ next_page }}">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"
                     data-placement="right" title="To next page">
                 Next
             </button>
         </a>
+        {% endif %}
         {% endif %}
     </span>
 </div>

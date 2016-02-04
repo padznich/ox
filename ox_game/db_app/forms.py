@@ -14,3 +14,4 @@ class LogFilterForm(forms.Form):
     from_date = forms.DateField(label='From date', required=False)
     to_date = forms.DateField(label='To date', required=False)
     player_id = forms.IntegerField(label="Player ID", required=False)
+

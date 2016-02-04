@@ -128,7 +128,7 @@ def change_xp(request, player_id):
 @login_required
 def show_logs(request):
     # Feature #22
-    form = LogFilterForm(request.POST or None)
+    form = LogFilterForm(request.GET or None)
 
     page = request.GET.get('page')
     if page == u'None' or page is None:
@@ -138,9 +138,6 @@ def show_logs(request):
     next_page = page + 1
 
     pages_count = LogGameEvents.objects.count()
-    pages_amount = pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
-    if pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE != pages_count / float(NUMBER_OF_RECORDS_AT_THE_PAGE_LOG):
-        pages_amount += 1
 
     logs = LogGameEvents.objects.all()[
            NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*prev_page:NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*page
@@ -150,24 +147,10 @@ def show_logs(request):
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
     filtered = 0
-    if player_id or from_date or to_date:
-        filtered = 1
-        logs = LogGameEvents.objects
-    if player_id != u'None' and player_id is not None:
-        logs = logs.filter(player_id=player_id)
-    if from_date != u'None' and from_date is not None:
-        logs = logs.filter(created__gte=from_date)
-    if to_date != u'None' and to_date is not None:
-        logs = logs.filter(created__lte=to_date)
 
-    # paginator = Paginator(logs, NUMBER_OF_RECORDS_AT_THE_PAGE_LOG)
-    # page = request.GET.get('page')
-    # try:
-    #     logs = paginator.page(page)
-    # except PageNotAnInteger:
-    #     logs = paginator.page(1)
-    # except EmptyPage:
-    #     logs = paginator.page(paginator.num_pages)
+    pages_amount = pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
+    if pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE != pages_count / float(NUMBER_OF_RECORDS_AT_THE_PAGE_LOG):
+        pages_amount += 1
 
     context = {
         "title": 'Logs table',
@@ -188,6 +171,25 @@ def show_logs(request):
         to_date = form.cleaned_data.get("to_date")
         player_id = form.cleaned_data.get("player_id")
 
+        # Filtering
+        logs = LogGameEvents.objects
+        if player_id != u'None' and player_id is not None:
+            logs = logs.filter(player_id=player_id)
+            pages_count = logs.count()
+        if from_date != u'None' and from_date is not None:
+            logs = logs.filter(created__gte=from_date)
+            pages_count = logs.count()
+        if to_date != u'None' and to_date is not None:
+            logs = logs.filter(created__lte=to_date)
+            pages_count = logs.count()
+        pages_amount = pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
+        if pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE != pages_count / float(NUMBER_OF_RECORDS_AT_THE_PAGE_LOG):
+            pages_amount += 1
+        logs = logs[
+           NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*prev_page:NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*page
+           ]
+
+        # Creating out_redirect_string for logs.html
         out_redirect_string = "?"
         if player_id:
             out_redirect_string += "player_id={}".format(player_id)
@@ -196,14 +198,14 @@ def show_logs(request):
             if to_date:
                 out_redirect_string += "&to_date={}".format(to_date)
         elif from_date:
-                out_redirect_string += "from_date={}".format(from_date)
-                if to_date:
-                    out_redirect_string += "&to_date={}".format(to_date)
-        else:
+            out_redirect_string += "from_date={}".format(from_date)
+            if to_date:
+                out_redirect_string += "&to_date={}".format(to_date)
+        elif to_date:
             out_redirect_string += "to_date={}".format(to_date)
-        form = LogFilterForm(request.POST or None)
+
         context = {
-            "title": 'Filtered Logs table',
+            "title": 'Logs table',
             "logs": logs,
             "form": form,
             "player_id": player_id,
@@ -213,9 +215,10 @@ def show_logs(request):
             "pages_amount": pages_amount,
             "prev_page": prev_page,
             "next_page": next_page,
-            "filtered": 1,
+            "filtered": filtered,
+            "out_redirect_string": out_redirect_string,
         }
-        return HttpResponseRedirect(out_redirect_string)
+        return render(request, 'logs.html', context)
 
     return render(request, 'logs.html', context)
 
