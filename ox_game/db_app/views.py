@@ -166,7 +166,7 @@ def show_logs(request):
         "filtered": filtered,
     }
 
-    if form.is_valid():
+    if form.is_valid() and any(form.cleaned_data.values()):
         from_date = form.cleaned_data.get("from_date")
         to_date = form.cleaned_data.get("to_date")
         player_id = form.cleaned_data.get("player_id")
@@ -185,11 +185,16 @@ def show_logs(request):
         pages_amount = pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE_LOG
         if pages_count / NUMBER_OF_RECORDS_AT_THE_PAGE != pages_count / float(NUMBER_OF_RECORDS_AT_THE_PAGE_LOG):
             pages_amount += 1
+
         logs = logs[
            NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*prev_page:NUMBER_OF_RECORDS_AT_THE_PAGE_LOG*page
            ]
 
         # Creating out_redirect_string for logs.html
+
+        # print('DEBUG: player_id is {}'.format(player_id))
+        # print('DEBUG: from_date is {}'.format(from_date))
+        # print('DEBUG: to_date is {}'.format(to_date))
         out_redirect_string = "?"
         if player_id:
             out_redirect_string += "player_id={}".format(player_id)
